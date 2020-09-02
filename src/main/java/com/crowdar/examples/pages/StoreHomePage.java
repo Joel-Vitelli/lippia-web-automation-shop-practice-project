@@ -1,6 +1,7 @@
 package com.crowdar.examples.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -45,10 +46,11 @@ public class StoreHomePage extends PageBaseStore {
     }
 
     public void loginButtonClick(){
+        if (isElementPresent(By.cssSelector(SIGN_IN_BUTTON_CSS_SELECTOR)) && isElementPresent(By.cssSelector(SIGNIN_BUTTON_CSS_SELECTOR))){
+            clickElement(By.cssSelector(SIGNIN_BUTTON_CSS_SELECTOR));
+        }
         if (isElementVisible(By.cssSelector(SIGN_IN_BUTTON_CSS_SELECTOR))){
             click("store.signin_button");
-        } else {
-            clickElement(By.cssSelector(SIGNIN_BUTTON_CSS_SELECTOR));
         }
     }
 
