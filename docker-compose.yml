@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+    zalenium:
+        image: "dosel/zalenium"
+        tty: true
+        volumes:
+            - /tmp/videos:/home/seluser/videos
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /usr/bin/docker:/usr/bin/docker
+        ports:
+            - 4444:4444
+        environment:
+            - TZ=America/Argentina/Buenos_Aires
+        command: > 
+            start --desiredContainers 2
+                  --maxDockerSeleniumContainers 4
+                  --timeZone "America/Argentina/Buenos_Aires"
+
+    lippia_zalenium:
+       image: crowdar/lippia:3.2.1.1
+       depends_on:
+            - zalenium
+       volumes:  
+            - .:/opt/workspace/automation
+       working_dir: /opt/workspace/automation
+       command: mvn clean test -P GridParallel -Dcucumber.tags=@Smoke -Dcrowdar.driverHub=http://zalenium:4444/wd/hub
+
